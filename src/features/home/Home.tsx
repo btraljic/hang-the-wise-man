@@ -10,7 +10,13 @@ function Home() {
     <div className='container-fluid'>
       <h3>Home page</h3>
       <p>Hang the wise man, {username}</p>
-      <button onClick={() => dispatch(setUser('UserName'))}>Set User</button>
+      <button
+        type='button'
+        className='btn btn-outline-light'
+        onClick={() => dispatch(setUser('UserName'))}
+      >
+        Set User
+      </button>
     </div>
   )
 }
