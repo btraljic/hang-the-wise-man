@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { selectUser, setUser } from './features/user/userSlice'
+import { selectUser, setUser } from '../user/userSlice'
 
-function App() {
+function Home() {
   const username = useSelector(selectUser)
   const dispatch = useDispatch()
 
   return (
-    <div className=''>
+    <div className='container-fluid'>
+      <h3>Home page</h3>
       <p>Hang the wise man, {username}</p>
       <button onClick={() => dispatch(setUser('UserName'))}>Set User</button>
     </div>
   )
 }
 
-export default App
+export default Home
