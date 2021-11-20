@@ -1,4 +1,4 @@
-import Layout from '../features/common/components/layout'
+import Layout from '../features/common/layout'
 import Home from '../features/home'
 
 function App() {

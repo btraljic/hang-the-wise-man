@@ -19,6 +19,7 @@ body {
 }
 
 body > div {
+  display: flex;
   position: relative;
   min-height: 100%;
   padding-top: 50px;
@@ -43,6 +44,8 @@ header > h4 {
 }
 
 main {
+  display: flex;
+  min-width: 100%;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }

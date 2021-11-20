@@ -1,22 +1,20 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-import { selectUser, setUser } from '../user/userSlice'
+import { Login, selectUser } from '../user'
 
 function Home() {
   const username = useSelector(selectUser)
-  const dispatch = useDispatch()
 
   return (
     <div className='container-fluid'>
-      <h3>Home page</h3>
-      <p>Hang the wise man, {username}</p>
-      <button
-        type='button'
-        className='btn btn-outline-light'
-        onClick={() => dispatch(setUser('UserName'))}
-      >
-        Set User
-      </button>
+      {username === '' ? (
+        <Login />
+      ) : (
+        <>
+          <h3>Home page</h3>
+          <p>Hang the wise man, {username}</p>
+        </>
+      )}
     </div>
   )
 }

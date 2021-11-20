@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../../app/store'
 
-type User = {
-  name: string
-}
+import type { RootState, User } from '../../app/types'
 
 const slice = createSlice({
   name: 'user',
