@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import styles from './Login.module.css'
 import loginImg from '../../assets/img/login.png'
-import { setUser } from '../user'
+import { setUser } from './'
 
 function Login() {
   const dispatch = useDispatch()
