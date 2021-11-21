@@ -1,33 +1,56 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import Spinner from '../common/spinner'
 
-import { getPuzzle, selectHangmanPuzzle, selectHangmanPuzzleAuthor } from './'
-import style from './HangmanPuzzle.module.css'
+import { selectHangmanPuzzleShow, selectHangmanPuzzleAuthor } from '.'
+import styles from './HangmanPuzzle.module.css'
 import { selectHangmanPuzzleLoadingStatus } from './hangmanSlice'
 
 function HangmanPuzzle() {
-  const hangmanPuzzle = useSelector(selectHangmanPuzzle)
+  const hangmanPuzzleShow = useSelector(selectHangmanPuzzleShow)
   const hangmanPuzzleAuthor = useSelector(selectHangmanPuzzleAuthor)
   const hangmanPuzzleLoadingStatus = useSelector(
     selectHangmanPuzzleLoadingStatus
   )
-  const dispatch = useDispatch()
+
+  const showPuzzle = useCallback(() => {
+    const puzzleShow: JSX.Element[] = []
+    let word: JSX.Element[] = []
+
+    if (hangmanPuzzleShow.length) {
+      hangmanPuzzleShow.forEach((letter, index) => {
+        word.push(
+          <span key={index} className={styles.letter}>
+            {letter}
+          </span>
+        )
+
+        if (letter === ' ' || index === hangmanPuzzleShow.length - 1) {
+          puzzleShow.push(
+            <span key={index} className={styles.word}>
+              {word}
+            </span>
+          )
+          word = []
+        }
+      })
+    }
+
+    console.log(puzzleShow)
+    return puzzleShow
+  }, [hangmanPuzzleShow])
 
   return (
     <div>
       <Spinner loading={hangmanPuzzleLoadingStatus === 'loading'} />
-      <div className={style.text}>
-        <em>{hangmanPuzzleAuthor}</em>
+      <div className={styles.text}>
+        <em>
+          {hangmanPuzzleAuthor}
+          {hangmanPuzzleAuthor && ':'}
+        </em>
         <br />
-        {hangmanPuzzle}
+        {showPuzzle()}
       </div>
-      <button
-        type='button'
-        className='btn btn-outline-light'
-        onClick={() => dispatch(getPuzzle())}
-      >
-        RESET GAME
-      </button>
     </div>
   )
 }

@@ -2,6 +2,16 @@
   font-size: 3rem;
 }
 
+.word {
+  display: inline-block;
+}
+
+.letter {
+  display: inline-block;
+  width: 0.75em;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .text {
     font-size: 1.5rem;

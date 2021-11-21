@@ -1,0 +1,48 @@
+.keyboard {
+  max-width: 400px;
+  width: 95%;
+  padding: 0.5rem;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #00000055;
+  border-radius: 10px;
+}
+
+.keyboardRow {
+  text-align: center;
+}
+
+.key {
+  display: inline-block;
+  background-color: rgba(243, 243, 243, 0.5);
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 0.5rem;
+  width: 2rem;
+  cursor: pointer;
+}
+
+.keyDisabled {
+  display: inline-block;
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 0.5rem;
+  width: 2rem;
+  cursor: default;
+}
+
+.reset {
+  width: 14rem;
+}
+
+.key:hover {
+  border: 1px solid #eeeeee;
+  background-color: transparent;
+}

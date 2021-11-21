@@ -1,5 +1,5 @@
 function Header() {
-  return <h4>Hang the wise man</h4>
+  return <h3>Hang the wise man</h3>
 }
 
 export default Header

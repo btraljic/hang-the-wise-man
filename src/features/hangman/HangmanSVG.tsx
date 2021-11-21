@@ -1,4 +1,4 @@
-import style from './HangmanSVG.module.css'
+import styles from './HangmanSVG.module.css'
 
 export interface IHangmanSVGProps {
   misses?: number
@@ -6,9 +6,9 @@ export interface IHangmanSVGProps {
 
 function HangmanSVG({ misses = 0 }: IHangmanSVGProps) {
   return (
-    <div className={style.container}>
+    <div className={styles.container}>
       <svg
-        className={style['hangman-svg']}
+        className={styles['hangman-svg']}
         width='100%'
         height='100%'
         viewBox='0 0 127.72982 203.46246'

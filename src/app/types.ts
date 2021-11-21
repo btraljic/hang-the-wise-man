@@ -6,9 +6,10 @@ export type User = {
 }
 
 export type Hangman = {
-  puzzle: string
-  puzzleShow: string
+  puzzle: string[]
+  puzzleShow: string[]
   puzzleAuthor: string
   puzzleLoadingStatus: string
+  keyboardLetters: boolean[]
   missed: number
 }
