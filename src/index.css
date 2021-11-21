@@ -1,7 +1,10 @@
 /* ****************************************************************************
 ***** global styles
 **************************************************************************** */
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@font-face {
+  font-family: 'StruggleLine';
+  src: url('./assets/font/StruggleLine.otf') format('opentype');
+}
 
 html,
 body {
@@ -10,7 +13,8 @@ body {
   padding: 0 !important;
   margin: 0 !important;
   color: #eeeeee;
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'StruggleLine', cursive;
+  text-transform: uppercase;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;

@@ -12,10 +12,9 @@ function Home() {
         <Login />
       ) : (
         <>
-          <h3>Home page</h3>
-          <p>
-            Player, <strong>{username}</strong>
-          </p>
+          <h3>
+            Player: <em>{username}</em>
+          </h3>
           <Hangman />
         </>
       )}
