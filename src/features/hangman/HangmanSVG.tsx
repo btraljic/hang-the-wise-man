@@ -8,7 +8,7 @@ function HangmanSVG({ misses = 0 }: IHangmanSVGProps) {
   return (
     <div className={styles.container}>
       <svg
-        className={styles['hangman-svg']}
+        className={styles.hangmanSvg}
         width='100%'
         height='100%'
         viewBox='0 0 127.72982 203.46246'
