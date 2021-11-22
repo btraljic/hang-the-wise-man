@@ -1,0 +1,27 @@
+.container {
+  position: absolute;
+  background-color: #ffffff;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3rem;
+  opacity: 0.4;
+  animation: fadeIn 4s;
+}
+
+.img {
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.4;
+  }
+}

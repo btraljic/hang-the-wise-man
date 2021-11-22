@@ -13,4 +13,5 @@ export type Hangman = {
   activeKeyboardLetter: string
   keyboardLetters: boolean[]
   misses: number
+  isFinished: boolean
 }

@@ -34,6 +34,7 @@ const slice = createSlice({
     activeKeyboardLetter: '',
     keyboardLetters: [],
     misses: 0,
+    isFinished: false,
   } as Hangman,
 
   reducers: {
@@ -48,9 +49,17 @@ const slice = createSlice({
         }
       })
       if (isMissed) {
+        state.activeKeyboardLetter = ''
         state.misses++
       }
       state.keyboardLetters[letter.charCodeAt(0)] = false
+
+      if (
+        JSON.stringify(state.puzzle) === JSON.stringify(state.puzzleShow) ||
+        state.misses > 5
+      ) {
+        state.isFinished = true
+      }
     },
   },
 
@@ -68,6 +77,7 @@ const slice = createSlice({
         state.activeKeyboardLetter = ''
         state.keyboardLetters = getKeyboardLetters()
         state.misses = 0
+        state.isFinished = false
       })
       .addCase(getPuzzle.rejected, (state) => {
         state.puzzle = []
@@ -77,6 +87,7 @@ const slice = createSlice({
         state.activeKeyboardLetter = ''
         state.keyboardLetters = []
         state.misses = 0
+        state.isFinished = false
       })
   },
 })
@@ -95,5 +106,7 @@ export const selectHangmanActiveKeyboardLetter = (state: RootState) =>
 export const selectHangmanKeyboardLetters = (state: RootState) =>
   state.hangman.keyboardLetters
 export const selectHangmanMisses = (state: RootState) => state.hangman.misses
+export const selectHangmanIsFinished = (state: RootState) =>
+  state.hangman.isFinished
 
 export default slice.reducer

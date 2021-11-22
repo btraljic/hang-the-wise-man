@@ -3,15 +3,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import Draggable from 'react-draggable'
 
 import styles from './HangmanKeyboard.module.css'
-import { getPuzzle, selectHangmanKeyboardLetters, setKeyboardLetter } from '.'
+import {
+  getPuzzle,
+  selectHangmanIsFinished,
+  selectHangmanKeyboardLetters,
+  setKeyboardLetter,
+} from '.'
 
 function HangmanKeyboard() {
   const nodeRef = useRef(null)
   const dispatch = useDispatch()
   const hangmanKeyboardLetters = useSelector(selectHangmanKeyboardLetters)
+  const hangmanIsFinished = useSelector(selectHangmanIsFinished)
 
   const handkeKeyClick = (letter: string) =>
-    hangmanKeyboardLetters[letter.charCodeAt(0)]
+    hangmanKeyboardLetters[letter.charCodeAt(0)] && !hangmanIsFinished
       ? dispatch(setKeyboardLetter(letter))
       : null
 

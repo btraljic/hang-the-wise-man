@@ -19,6 +19,13 @@
   animation: pulse 3s;
 }
 
+.letterMissed {
+  display: inline-block;
+  width: 0.75em;
+  text-align: center;
+  color: #fcc0c0;
+}
+
 @keyframes pulse {
   0% {
     color: #fa2424;
