@@ -12,6 +12,30 @@
   text-align: center;
 }
 
+.letterPulse {
+  display: inline-block;
+  width: 0.75em;
+  text-align: center;
+  animation: pulse 3s;
+}
+
+@keyframes pulse {
+  0% {
+    color: #fa2424;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+  }
+
+  70% {
+    color: #fcc0c0;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0);
+  }
+
+  100% {
+    color: inherit;
+    text-shadow: 0 0 0px rgba(255, 255, 255, 0);
+  }
+}
+
 @media (max-width: 768px) {
   .text {
     font-size: 1.5rem;

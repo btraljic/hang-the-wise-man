@@ -1,15 +1,17 @@
+import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Draggable from 'react-draggable'
 
 import styles from './HangmanKeyboard.module.css'
-import { getPuzzle, selectKeyboardLetters, setKeyboardLetter } from '.'
+import { getPuzzle, selectHangmanKeyboardLetters, setKeyboardLetter } from '.'
 
 function HangmanKeyboard() {
+  const nodeRef = useRef(null)
   const dispatch = useDispatch()
-  const keyboardLetters = useSelector(selectKeyboardLetters)
+  const hangmanKeyboardLetters = useSelector(selectHangmanKeyboardLetters)
 
   const handkeKeyClick = (letter: string) =>
-    keyboardLetters[letter.charCodeAt(0)]
+    hangmanKeyboardLetters[letter.charCodeAt(0)]
       ? dispatch(setKeyboardLetter(letter))
       : null
 
@@ -18,13 +20,14 @@ function HangmanKeyboard() {
       handle='.moveMe'
       defaultPosition={{ x: -175, y: 0 }}
       bounds='#root'
+      nodeRef={nodeRef}
     >
-      <div className={styles.keyboard}>
+      <div className={styles.keyboard} ref={nodeRef}>
         <div className={`moveMe ${styles.moveBar}`}>MOVE ME</div>
         <div className={styles.keyboardRow}>
           <span
             className={
-              keyboardLetters['Q'.charCodeAt(0)]
+              hangmanKeyboardLetters['Q'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -34,7 +37,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['W'.charCodeAt(0)]
+              hangmanKeyboardLetters['W'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -44,7 +47,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['E'.charCodeAt(0)]
+              hangmanKeyboardLetters['E'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -54,7 +57,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['R'.charCodeAt(0)]
+              hangmanKeyboardLetters['R'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -64,7 +67,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['T'.charCodeAt(0)]
+              hangmanKeyboardLetters['T'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -74,7 +77,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['Y'.charCodeAt(0)]
+              hangmanKeyboardLetters['Y'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -84,7 +87,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['U'.charCodeAt(0)]
+              hangmanKeyboardLetters['U'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -94,7 +97,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['I'.charCodeAt(0)]
+              hangmanKeyboardLetters['I'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -104,7 +107,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['O'.charCodeAt(0)]
+              hangmanKeyboardLetters['O'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -114,7 +117,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['P'.charCodeAt(0)]
+              hangmanKeyboardLetters['P'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -126,7 +129,7 @@ function HangmanKeyboard() {
         <div className={styles.keyboardRow}>
           <span
             className={
-              keyboardLetters['A'.charCodeAt(0)]
+              hangmanKeyboardLetters['A'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -136,7 +139,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['S'.charCodeAt(0)]
+              hangmanKeyboardLetters['S'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -146,7 +149,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['D'.charCodeAt(0)]
+              hangmanKeyboardLetters['D'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -156,7 +159,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['F'.charCodeAt(0)]
+              hangmanKeyboardLetters['F'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -166,7 +169,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['G'.charCodeAt(0)]
+              hangmanKeyboardLetters['G'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -176,7 +179,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['H'.charCodeAt(0)]
+              hangmanKeyboardLetters['H'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -186,7 +189,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['J'.charCodeAt(0)]
+              hangmanKeyboardLetters['J'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -196,7 +199,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['K'.charCodeAt(0)]
+              hangmanKeyboardLetters['K'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -206,7 +209,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['L'.charCodeAt(0)]
+              hangmanKeyboardLetters['L'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -218,7 +221,7 @@ function HangmanKeyboard() {
         <div className={styles.keyboardRow}>
           <span
             className={
-              keyboardLetters['Z'.charCodeAt(0)]
+              hangmanKeyboardLetters['Z'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -228,7 +231,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['X'.charCodeAt(0)]
+              hangmanKeyboardLetters['X'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -238,7 +241,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['C'.charCodeAt(0)]
+              hangmanKeyboardLetters['C'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -248,7 +251,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['V'.charCodeAt(0)]
+              hangmanKeyboardLetters['V'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -258,7 +261,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['B'.charCodeAt(0)]
+              hangmanKeyboardLetters['B'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -268,7 +271,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['N'.charCodeAt(0)]
+              hangmanKeyboardLetters['N'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -278,7 +281,7 @@ function HangmanKeyboard() {
           </span>
           <span
             className={
-              keyboardLetters['M'.charCodeAt(0)]
+              hangmanKeyboardLetters['M'.charCodeAt(0)]
                 ? styles.key
                 : styles.keyDisabled
             }
@@ -292,7 +295,7 @@ function HangmanKeyboard() {
             className={`${styles.key} ${styles.reset}`}
             onClick={() => dispatch(getPuzzle())}
           >
-            RESET GAME
+            START NEW GAME
           </span>
         </div>
       </div>

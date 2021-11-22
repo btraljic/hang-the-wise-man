@@ -31,12 +31,25 @@ const slice = createSlice({
     puzzleShow: [],
     puzzleAuthor: '',
     puzzleLoadingStatus: 'success',
+    activeKeyboardLetter: '',
     keyboardLetters: [],
-    missed: 0,
+    misses: 0,
   } as Hangman,
 
   reducers: {
     setKeyboardLetter: (state, { payload: letter }: PayloadAction<string>) => {
+      let isMissed = true
+
+      state.puzzle.forEach((item, index) => {
+        if (item === letter) {
+          state.activeKeyboardLetter = letter
+          state.puzzleShow[index] = letter
+          isMissed = false
+        }
+      })
+      if (isMissed) {
+        state.misses++
+      }
       state.keyboardLetters[letter.charCodeAt(0)] = false
     },
   },
@@ -52,15 +65,18 @@ const slice = createSlice({
         state.puzzleShow = getPuzzleShow(state.puzzle)
         state.puzzleAuthor = payload.author
         state.puzzleLoadingStatus = 'success'
+        state.activeKeyboardLetter = ''
         state.keyboardLetters = getKeyboardLetters()
+        state.misses = 0
       })
       .addCase(getPuzzle.rejected, (state) => {
         state.puzzle = []
         state.puzzleShow = []
         state.puzzleAuthor = ''
         state.puzzleLoadingStatus = 'failed'
+        state.activeKeyboardLetter = ''
         state.keyboardLetters = []
-        state.missed = 0
+        state.misses = 0
       })
   },
 })
@@ -74,7 +90,10 @@ export const selectHangmanPuzzleAuthor = (state: RootState) =>
   state.hangman.puzzleAuthor
 export const selectHangmanPuzzleLoadingStatus = (state: RootState) =>
   state.hangman.puzzleLoadingStatus
-export const selectKeyboardLetters = (state: RootState) =>
+export const selectHangmanActiveKeyboardLetter = (state: RootState) =>
+  state.hangman.activeKeyboardLetter
+export const selectHangmanKeyboardLetters = (state: RootState) =>
   state.hangman.keyboardLetters
+export const selectHangmanMisses = (state: RootState) => state.hangman.misses
 
 export default slice.reducer

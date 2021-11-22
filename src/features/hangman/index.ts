@@ -7,5 +7,7 @@ export {
   selectHangmanPuzzleShow,
   selectHangmanPuzzleAuthor,
   selectHangmanPuzzleLoadingStatus,
-  selectKeyboardLetters,
+  selectHangmanActiveKeyboardLetter,
+  selectHangmanKeyboardLetters,
+  selectHangmanMisses,
 } from './hangmanSlice'

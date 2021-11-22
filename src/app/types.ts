@@ -10,6 +10,7 @@ export type Hangman = {
   puzzleShow: string[]
   puzzleAuthor: string
   puzzleLoadingStatus: string
+  activeKeyboardLetter: string
   keyboardLetters: boolean[]
-  missed: number
+  misses: number
 }

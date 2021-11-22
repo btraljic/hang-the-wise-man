@@ -2,7 +2,11 @@ import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import Spinner from '../common/spinner'
 
-import { selectHangmanPuzzleShow, selectHangmanPuzzleAuthor } from '.'
+import {
+  selectHangmanPuzzleShow,
+  selectHangmanPuzzleAuthor,
+  selectHangmanActiveKeyboardLetter,
+} from '.'
 import styles from './HangmanPuzzle.module.css'
 import { selectHangmanPuzzleLoadingStatus } from './hangmanSlice'
 
@@ -12,6 +16,9 @@ function HangmanPuzzle() {
   const hangmanPuzzleLoadingStatus = useSelector(
     selectHangmanPuzzleLoadingStatus
   )
+  const hangmanActiveKeyboardLetter = useSelector(
+    selectHangmanActiveKeyboardLetter
+  )
 
   const showPuzzle = useCallback(() => {
     const puzzleShow: JSX.Element[] = []
@@ -19,11 +26,22 @@ function HangmanPuzzle() {
 
     if (hangmanPuzzleShow.length) {
       hangmanPuzzleShow.forEach((letter, index) => {
-        word.push(
-          <span key={index} className={styles.letter}>
-            {letter}
-          </span>
-        )
+        if (
+          hangmanActiveKeyboardLetter &&
+          hangmanActiveKeyboardLetter === letter
+        ) {
+          word.push(
+            <span key={index} className={styles.letterPulse}>
+              {letter}
+            </span>
+          )
+        } else {
+          word.push(
+            <span key={index} className={styles.letter}>
+              {letter}
+            </span>
+          )
+        }
 
         if (letter === ' ' || index === hangmanPuzzleShow.length - 1) {
           puzzleShow.push(
@@ -36,9 +54,8 @@ function HangmanPuzzle() {
       })
     }
 
-    console.log(puzzleShow)
     return puzzleShow
-  }, [hangmanPuzzleShow])
+  }, [hangmanPuzzleShow, hangmanActiveKeyboardLetter])
 
   return (
     <div>
