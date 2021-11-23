@@ -1,10 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-import { Hangman, RootState } from '../../app/types'
+import { GameStatus, Hangman, RootState } from '../../app/types'
 
 const getPuzzleShow = (puzzle: string[]): string[] => {
   return puzzle.map((letter) => (letter < 'A' || letter > 'Z' ? letter : '_'))
+}
+
+const getPuzzleUniqueCharacters = (puzzle: string[]): number => {
+  return Array.from(
+    new Set(puzzle.filter((letter) => letter >= 'A' && letter <= 'Z'))
+  ).length
 }
 
 const getKeyboardLetters = (): boolean[] => {
@@ -15,13 +21,14 @@ const getKeyboardLetters = (): boolean[] => {
   return keyboardLetters
 }
 
-export const getPuzzle = createAsyncThunk<{ content: string; author: string }>(
-  'hangman/getPuzzle',
-  async () => {
-    const response = await axios.get('https://api.quotable.io/random')
-    return response.data
-  }
-)
+export const getPuzzle = createAsyncThunk<{
+  _id: string
+  content: string
+  author: string
+}>('hangman/getPuzzle', async () => {
+  const response = await axios.get('https://api.quotable.io/random')
+  return response.data
+})
 
 const slice = createSlice({
   name: 'hangman',
@@ -29,12 +36,16 @@ const slice = createSlice({
   initialState: {
     puzzle: [],
     puzzleShow: [],
+    puzzleId: '',
     puzzleAuthor: '',
+    puzzleLength: 0,
+    puzzleUniqueCharacters: 0,
     puzzleLoadingStatus: 'success',
     activeKeyboardLetter: '',
     keyboardLetters: [],
     misses: 0,
-    isFinished: false,
+    gameStatus: GameStatus.Start,
+    gameDuration: 0,
   } as Hangman,
 
   reducers: {
@@ -58,7 +69,8 @@ const slice = createSlice({
         JSON.stringify(state.puzzle) === JSON.stringify(state.puzzleShow) ||
         state.misses > 5
       ) {
-        state.isFinished = true
+        state.gameDuration = Date.now() - state.gameDuration
+        state.gameStatus = state.misses > 5 ? GameStatus.Lose : GameStatus.Win
       }
     },
   },
@@ -72,22 +84,29 @@ const slice = createSlice({
         console.log(payload)
         state.puzzle = payload.content.toUpperCase().split('')
         state.puzzleShow = getPuzzleShow(state.puzzle)
+        state.puzzleId = payload._id
         state.puzzleAuthor = payload.author
+        state.puzzleLength = state.puzzle.length
+        state.puzzleUniqueCharacters = getPuzzleUniqueCharacters(state.puzzle)
         state.puzzleLoadingStatus = 'success'
         state.activeKeyboardLetter = ''
         state.keyboardLetters = getKeyboardLetters()
         state.misses = 0
-        state.isFinished = false
+        state.gameStatus = GameStatus.Playing
+        state.gameDuration = Date.now()
       })
       .addCase(getPuzzle.rejected, (state) => {
         state.puzzle = []
         state.puzzleShow = []
+        state.puzzleId = ''
         state.puzzleAuthor = ''
+        state.puzzleLength = 0
+        state.puzzleUniqueCharacters = 0
         state.puzzleLoadingStatus = 'failed'
         state.activeKeyboardLetter = ''
         state.keyboardLetters = []
         state.misses = 0
-        state.isFinished = false
+        state.gameDuration = 0
       })
   },
 })
@@ -106,7 +125,7 @@ export const selectHangmanActiveKeyboardLetter = (state: RootState) =>
 export const selectHangmanKeyboardLetters = (state: RootState) =>
   state.hangman.keyboardLetters
 export const selectHangmanMisses = (state: RootState) => state.hangman.misses
-export const selectHangmanIsFinished = (state: RootState) =>
-  state.hangman.isFinished
+export const selectHangmanGameStatus = (state: RootState) =>
+  state.hangman.gameStatus
 
 export default slice.reducer

@@ -1,21 +1,24 @@
 import { useSelector } from 'react-redux'
 
-import { selectHangmanIsFinished, selectHangmanMisses } from '.'
+import { selectHangmanGameStatus } from '.'
 import styles from './HangmanFinished.module.css'
 import winImg from '../../assets/img/win.png'
 import loseImg from '../../assets/img/lose.png'
+import { GameStatus } from '../../app/types'
 
 function HangmanFinished() {
-  const hangmanIsFinished = useSelector(selectHangmanIsFinished)
-  const hangmanMisses = useSelector(selectHangmanMisses)
+  const hangmanGameStatus = useSelector(selectHangmanGameStatus)
 
-  if (!hangmanIsFinished) {
+  if (
+    hangmanGameStatus === GameStatus.Start ||
+    hangmanGameStatus === GameStatus.Playing
+  ) {
     return <></>
   }
 
   return (
     <div className={styles.container}>
-      {hangmanMisses > 5 ? (
+      {hangmanGameStatus === GameStatus.Lose ? (
         <img className={styles.img} src={loseImg} alt='Lose' />
       ) : (
         <img className={styles.img} src={winImg} alt='Win' />

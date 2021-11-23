@@ -7,10 +7,11 @@ import {
   selectHangmanPuzzleShow,
   selectHangmanPuzzleAuthor,
   selectHangmanActiveKeyboardLetter,
-  selectHangmanIsFinished,
+  selectHangmanGameStatus,
 } from '.'
 import styles from './HangmanPuzzle.module.css'
 import { selectHangmanPuzzleLoadingStatus } from './hangmanSlice'
+import { GameStatus } from '../../app/types'
 
 function HangmanPuzzle() {
   const hangmanPuzzle = useSelector(selectHangmanPuzzle)
@@ -22,7 +23,7 @@ function HangmanPuzzle() {
   const hangmanActiveKeyboardLetter = useSelector(
     selectHangmanActiveKeyboardLetter
   )
-  const hangmanIsFinished = useSelector(selectHangmanIsFinished)
+  const hangmanGameStatus = useSelector(selectHangmanGameStatus)
 
   const showPuzzle = useCallback(() => {
     const puzzleShow: JSX.Element[] = []
@@ -37,12 +38,12 @@ function HangmanPuzzle() {
               hangmanActiveKeyboardLetter &&
               hangmanActiveKeyboardLetter === letter
                 ? styles.letterPulse
-                : hangmanIsFinished && letter === '_'
+                : hangmanGameStatus === GameStatus.Lose && letter === '_'
                 ? styles.letterMissed
                 : styles.letter
             }
           >
-            {hangmanIsFinished && letter === '_'
+            {hangmanGameStatus === GameStatus.Lose && letter === '_'
               ? hangmanPuzzle[index]
               : letter}
           </span>
@@ -64,7 +65,7 @@ function HangmanPuzzle() {
     hangmanPuzzle,
     hangmanPuzzleShow,
     hangmanActiveKeyboardLetter,
-    hangmanIsFinished,
+    hangmanGameStatus,
   ])
 
   return (

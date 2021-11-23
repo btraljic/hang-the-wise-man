@@ -5,19 +5,23 @@ import Draggable from 'react-draggable'
 import styles from './HangmanKeyboard.module.css'
 import {
   getPuzzle,
-  selectHangmanIsFinished,
+  selectHangmanGameStatus,
   selectHangmanKeyboardLetters,
+  selectHangmanMisses,
   setKeyboardLetter,
 } from '.'
+import { GameStatus } from '../../app/types'
 
 function HangmanKeyboard() {
   const nodeRef = useRef(null)
   const dispatch = useDispatch()
   const hangmanKeyboardLetters = useSelector(selectHangmanKeyboardLetters)
-  const hangmanIsFinished = useSelector(selectHangmanIsFinished)
+  const hangmanGameStatus = useSelector(selectHangmanGameStatus)
+  const hangmanMisses = useSelector(selectHangmanMisses)
 
   const handkeKeyClick = (letter: string) =>
-    hangmanKeyboardLetters[letter.charCodeAt(0)] && !hangmanIsFinished
+    hangmanKeyboardLetters[letter.charCodeAt(0)] &&
+    hangmanGameStatus === GameStatus.Playing
       ? dispatch(setKeyboardLetter(letter))
       : null
 
@@ -28,7 +32,12 @@ function HangmanKeyboard() {
       bounds='#root'
       nodeRef={nodeRef}
     >
-      <div className={styles.keyboard} ref={nodeRef}>
+      <div
+        className={`${styles.keyboard} ${
+          hangmanGameStatus === GameStatus.Lose && styles.lose
+        }  ${hangmanGameStatus === GameStatus.Win && styles.win}`}
+        ref={nodeRef}
+      >
         <div className={`moveMe ${styles.moveBar}`}>MOVE ME</div>
         <div className={styles.keyboardRow}>
           <span
@@ -301,7 +310,7 @@ function HangmanKeyboard() {
             className={`${styles.key} ${styles.reset}`}
             onClick={() => dispatch(getPuzzle())}
           >
-            START NEW GAME
+            START A NEW GAME
           </span>
         </div>
       </div>

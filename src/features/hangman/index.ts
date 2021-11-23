@@ -10,5 +10,5 @@ export {
   selectHangmanActiveKeyboardLetter,
   selectHangmanKeyboardLetters,
   selectHangmanMisses,
-  selectHangmanIsFinished,
+  selectHangmanGameStatus,
 } from './hangmanSlice'

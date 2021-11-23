@@ -10,6 +10,14 @@
   border-radius: 10px;
 }
 
+.win {
+  background-color: #0de14c55;
+}
+
+.lose {
+  background-color: #ef6f6f55;
+}
+
 .keyboardRow {
   text-align: center;
 }
@@ -41,6 +49,11 @@
   cursor: pointer;
 }
 
+.key:hover {
+  border: 2px solid #eeeeee;
+  background-color: transparent;
+}
+
 .keyDisabled {
   display: inline-block;
   background-color: transparent;
@@ -55,9 +68,4 @@
 
 .reset {
   width: 14rem;
-}
-
-.key:hover {
-  border: 1px solid #eeeeee;
-  background-color: transparent;
 }
