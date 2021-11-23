@@ -4,16 +4,16 @@ import { Login, selectUser } from '../user'
 import Hangman from '../hangman'
 
 function Home() {
-  const username = useSelector(selectUser)
+  const userName = useSelector(selectUser)
 
   return (
     <div className='container-fluid'>
-      {username === '' ? (
+      {userName === '' ? (
         <Login />
       ) : (
         <>
           <h3>
-            Player: <em>{username}</em>
+            Player: <em>{userName}</em>
           </h3>
           <Hangman />
         </>

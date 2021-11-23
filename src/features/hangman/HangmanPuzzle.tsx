@@ -10,16 +10,14 @@ import {
   selectHangmanGameStatus,
 } from '.'
 import styles from './HangmanPuzzle.module.css'
-import { selectHangmanPuzzleLoadingStatus } from './hangmanSlice'
+import { selectHangmanFetchingStatus } from './hangmanSlice'
 import { GameStatus } from '../../app/types'
 
 function HangmanPuzzle() {
   const hangmanPuzzle = useSelector(selectHangmanPuzzle)
   const hangmanPuzzleShow = useSelector(selectHangmanPuzzleShow)
   const hangmanPuzzleAuthor = useSelector(selectHangmanPuzzleAuthor)
-  const hangmanPuzzleLoadingStatus = useSelector(
-    selectHangmanPuzzleLoadingStatus
-  )
+  const hangmanFetchingStatus = useSelector(selectHangmanFetchingStatus)
   const hangmanActiveKeyboardLetter = useSelector(
     selectHangmanActiveKeyboardLetter
   )
@@ -70,7 +68,7 @@ function HangmanPuzzle() {
 
   return (
     <div>
-      <Spinner loading={hangmanPuzzleLoadingStatus === 'loading'} />
+      <Spinner loading={hangmanFetchingStatus === 'loading'} />
       <div className={styles.text}>
         <em>
           {hangmanPuzzleAuthor}

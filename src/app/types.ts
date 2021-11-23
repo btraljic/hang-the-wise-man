@@ -12,17 +12,22 @@ export enum GameStatus {
   Lose = 'LOSE',
 }
 
+export type Score = {
+  quoteId: string
+  length: number
+  uniqueCharacters: number
+  userName: string
+  errors: number
+  duration: number
+}
+
 export type Hangman = {
   puzzle: string[]
   puzzleShow: string[]
-  puzzleId: string
   puzzleAuthor: string
-  puzzleLength: number
-  puzzleUniqueCharacters: number
-  puzzleLoadingStatus: string
+  fetchingStatus: string
   activeKeyboardLetter: string
   keyboardLetters: boolean[]
-  misses: number
   gameStatus: GameStatus
-  gameDuration: number
+  score: Score
 }

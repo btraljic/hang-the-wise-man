@@ -21,14 +21,28 @@ const getKeyboardLetters = (): boolean[] => {
   return keyboardLetters
 }
 
-export const getPuzzle = createAsyncThunk<{
-  _id: string
-  content: string
-  author: string
-}>('hangman/getPuzzle', async () => {
-  const response = await axios.get('https://api.quotable.io/random')
-  return response.data
-})
+export const getPuzzle = createAsyncThunk(
+  'hangman/getPuzzle',
+  async ({ userName }: { userName: string }) => {
+    const response = await axios.get('https://api.quotable.io/random')
+    return { ...response.data, userName }
+  }
+)
+
+export const postScore = createAsyncThunk(
+  'hangman/postScore',
+  async (_, { getState }) => {
+    console.log('getState', (getState() as RootState).hangman.score)
+    const response = await axios.post(
+      'https://my-json-server.typicode.com/stanko-ingemark/hang_the_wise_man_frontend_task/highscoress',
+      JSON.stringify('aaa'),
+      {
+        headers: { 'content-type': 'application/json' },
+      }
+    )
+    return response.data
+  }
+)
 
 const slice = createSlice({
   name: 'hangman',
@@ -36,16 +50,19 @@ const slice = createSlice({
   initialState: {
     puzzle: [],
     puzzleShow: [],
-    puzzleId: '',
     puzzleAuthor: '',
-    puzzleLength: 0,
-    puzzleUniqueCharacters: 0,
-    puzzleLoadingStatus: 'success',
+    fetchingStatus: 'success',
     activeKeyboardLetter: '',
     keyboardLetters: [],
-    misses: 0,
     gameStatus: GameStatus.Start,
-    gameDuration: 0,
+    score: {
+      quoteId: '',
+      length: 0,
+      uniqueCharacters: 0,
+      userName: 'user',
+      errors: 0,
+      duration: 0,
+    },
   } as Hangman,
 
   reducers: {
@@ -61,16 +78,17 @@ const slice = createSlice({
       })
       if (isMissed) {
         state.activeKeyboardLetter = ''
-        state.misses++
+        state.score.errors++
       }
       state.keyboardLetters[letter.charCodeAt(0)] = false
 
       if (
         JSON.stringify(state.puzzle) === JSON.stringify(state.puzzleShow) ||
-        state.misses > 5
+        state.score.errors > 5
       ) {
-        state.gameDuration = Date.now() - state.gameDuration
-        state.gameStatus = state.misses > 5 ? GameStatus.Lose : GameStatus.Win
+        state.score.duration = Date.now() - state.score.duration
+        state.gameStatus =
+          state.score.errors > 5 ? GameStatus.Lose : GameStatus.Win
       }
     },
   },
@@ -78,35 +96,50 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPuzzle.pending, (state) => {
-        state.puzzleLoadingStatus = 'loading'
+        state.fetchingStatus = 'loading'
       })
       .addCase(getPuzzle.fulfilled, (state, { payload }) => {
-        console.log(payload)
+        console.log('payload', payload)
         state.puzzle = payload.content.toUpperCase().split('')
         state.puzzleShow = getPuzzleShow(state.puzzle)
-        state.puzzleId = payload._id
         state.puzzleAuthor = payload.author
-        state.puzzleLength = state.puzzle.length
-        state.puzzleUniqueCharacters = getPuzzleUniqueCharacters(state.puzzle)
-        state.puzzleLoadingStatus = 'success'
+        state.fetchingStatus = 'success'
         state.activeKeyboardLetter = ''
         state.keyboardLetters = getKeyboardLetters()
-        state.misses = 0
         state.gameStatus = GameStatus.Playing
-        state.gameDuration = Date.now()
+        state.score = {
+          quoteId: payload._id,
+          length: state.puzzle.length,
+          uniqueCharacters: getPuzzleUniqueCharacters(state.puzzle),
+          userName: payload.userName,
+          errors: 0,
+          duration: Date.now(),
+        }
       })
       .addCase(getPuzzle.rejected, (state) => {
         state.puzzle = []
         state.puzzleShow = []
-        state.puzzleId = ''
         state.puzzleAuthor = ''
-        state.puzzleLength = 0
-        state.puzzleUniqueCharacters = 0
-        state.puzzleLoadingStatus = 'failed'
+        state.fetchingStatus = 'failed'
         state.activeKeyboardLetter = ''
         state.keyboardLetters = []
-        state.misses = 0
-        state.gameDuration = 0
+        state.score = {
+          quoteId: '',
+          length: 0,
+          uniqueCharacters: 0,
+          userName: 'user',
+          errors: 0,
+          duration: 0,
+        }
+      })
+      .addCase(postScore.pending, (state) => {
+        state.fetchingStatus = 'loading'
+      })
+      .addCase(postScore.fulfilled, (state, { payload }) => {
+        state.fetchingStatus = 'success'
+      })
+      .addCase(postScore.rejected, (state) => {
+        state.fetchingStatus = 'failed'
       })
   },
 })
@@ -118,13 +151,14 @@ export const selectHangmanPuzzleShow = (state: RootState) =>
   state.hangman.puzzleShow
 export const selectHangmanPuzzleAuthor = (state: RootState) =>
   state.hangman.puzzleAuthor
-export const selectHangmanPuzzleLoadingStatus = (state: RootState) =>
-  state.hangman.puzzleLoadingStatus
+export const selectHangmanFetchingStatus = (state: RootState) =>
+  state.hangman.fetchingStatus
 export const selectHangmanActiveKeyboardLetter = (state: RootState) =>
   state.hangman.activeKeyboardLetter
 export const selectHangmanKeyboardLetters = (state: RootState) =>
   state.hangman.keyboardLetters
-export const selectHangmanMisses = (state: RootState) => state.hangman.misses
+export const selectHangmanMisses = (state: RootState) =>
+  state.hangman.score.errors
 export const selectHangmanGameStatus = (state: RootState) =>
   state.hangman.gameStatus
 

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Draggable from 'react-draggable'
 
 import styles from './HangmanKeyboard.module.css'
+import { selectUser } from '../user'
 import {
   getPuzzle,
   selectHangmanGameStatus,
@@ -15,6 +16,7 @@ import { GameStatus } from '../../app/types'
 function HangmanKeyboard() {
   const nodeRef = useRef(null)
   const dispatch = useDispatch()
+  const userName = useSelector(selectUser)
   const hangmanKeyboardLetters = useSelector(selectHangmanKeyboardLetters)
   const hangmanGameStatus = useSelector(selectHangmanGameStatus)
   const hangmanMisses = useSelector(selectHangmanMisses)
@@ -308,7 +310,7 @@ function HangmanKeyboard() {
         <div className={styles.keyboardRow}>
           <span
             className={`${styles.key} ${styles.reset}`}
-            onClick={() => dispatch(getPuzzle())}
+            onClick={() => dispatch(getPuzzle({ userName }))}
           >
             START A NEW GAME
           </span>

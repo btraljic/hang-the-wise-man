@@ -2,6 +2,7 @@ import HangmanSVG from './HangmanSVG'
 import HangmanPuzzle from './HangmanPuzzle'
 import HangmanKeyboard from './HangmanKeyboard'
 import HangmanFinished from './HangmanFinished'
+import HangmanScores from './HangmanScores'
 
 function Hangman() {
   return (
@@ -10,6 +11,7 @@ function Hangman() {
       <HangmanSVG />
       <HangmanPuzzle />
       <HangmanKeyboard />
+      {/* <HangmanScores /> */}
     </>
   )
 }
