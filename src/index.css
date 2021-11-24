@@ -70,3 +70,8 @@ footer {
 footer > p {
   line-height: 50px;
 }
+
+input {
+  font-family: inherit;
+  text-transform: uppercase;
+}

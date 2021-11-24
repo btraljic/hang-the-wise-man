@@ -154,7 +154,9 @@ const slice = createSlice({
         state.fetchingStatus = 'getScores/loading'
       })
       .addCase(getScores.fulfilled, (state, { payload }) => {
-        state.scores = [...payload]
+        state.scores = [...payload].sort(
+          (a, b) => 100 / (b.errors + 1) - 100 / (a.errors + 1)
+        )
         state.fetchingStatus = 'getScores/success'
       })
       .addCase(getScores.rejected, (state) => {

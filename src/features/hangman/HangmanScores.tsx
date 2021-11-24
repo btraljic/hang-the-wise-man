@@ -1,15 +1,17 @@
 import { useCallback } from 'react'
 import { useSelector } from 'react-redux'
 
-import { selectHangmanScores } from '.'
+import { GameStatus } from '../../app/types'
+import { selectHangmanGameStatus, selectHangmanScores } from '.'
 import styles from './HangmanScores.module.css'
 
 function HangmanScores() {
   const hangmanScores = useSelector(selectHangmanScores)
+  const hangmanGameStatus = useSelector(selectHangmanGameStatus)
 
   const showScores = useCallback(() => {
     return hangmanScores.map((item) => (
-      <tr>
+      <tr key={item.quoteId}>
         <td>{item.userName}</td>
         <td>{item.errors}</td>
       </tr>
@@ -21,7 +23,11 @@ function HangmanScores() {
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${
+        hangmanGameStatus === GameStatus.Lose && styles.lose
+      }  ${hangmanGameStatus === GameStatus.Win && styles.win}`}
+    >
       <table className='table table-borderless'>
         <thead>
           <tr>

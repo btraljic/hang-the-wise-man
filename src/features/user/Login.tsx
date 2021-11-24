@@ -15,13 +15,13 @@ function Login() {
         <img className={styles.img} src={loginImg} alt='Login' />
         <div className={styles.form}>
           <label htmlFor='loginaName' className='form-label'>
-            Name of the player
+            NAME OF THE PLAYER
           </label>
           <input
             type='text'
             className='form-control'
             id='loginaName'
-            placeholder='name'
+            placeholder='NAME'
             onChange={(e) => setName(e.target.value)}
           />
           <button
@@ -31,7 +31,7 @@ function Login() {
               name ? dispatch(setUser(name)) : alert('Please enter your name.')
             }
           >
-            Submit
+            SUBMIT
           </button>
         </div>
       </div>

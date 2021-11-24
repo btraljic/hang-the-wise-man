@@ -8,6 +8,7 @@
   padding: 3rem;
   opacity: 1;
   animation: fadeIn 3s;
+  overflow: hidden;
 }
 
 .img {

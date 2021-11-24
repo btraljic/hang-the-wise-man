@@ -4,8 +4,15 @@
   margin: 0 auto;
   padding: 1rem;
   font-size: 2rem;
-  background-color: #2b91f655;
   border-radius: 5px;
+}
+
+.win {
+  background-color: #0de14c55;
+}
+
+.lose {
+  background-color: #ef6f6f55;
 }
 
 .container > table {
@@ -15,6 +22,6 @@
 @media (max-width: 768px) {
   .container {
     width: 300px;
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 }
