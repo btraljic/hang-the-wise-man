@@ -10,8 +10,8 @@ function Hangman() {
       <HangmanFinished />
       <HangmanSVG />
       <HangmanPuzzle />
+      <HangmanScores />
       <HangmanKeyboard />
-      {/* <HangmanScores /> */}
     </>
   )
 }

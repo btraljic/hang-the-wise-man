@@ -30,4 +30,5 @@ export type Hangman = {
   keyboardLetters: boolean[]
   gameStatus: GameStatus
   score: Score
+  scores: Score[]
 }

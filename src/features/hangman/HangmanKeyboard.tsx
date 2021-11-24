@@ -8,7 +8,6 @@ import {
   getPuzzle,
   selectHangmanGameStatus,
   selectHangmanKeyboardLetters,
-  selectHangmanMisses,
   setKeyboardLetter,
 } from '.'
 import { GameStatus } from '../../app/types'
@@ -19,7 +18,6 @@ function HangmanKeyboard() {
   const userName = useSelector(selectUser)
   const hangmanKeyboardLetters = useSelector(selectHangmanKeyboardLetters)
   const hangmanGameStatus = useSelector(selectHangmanGameStatus)
-  const hangmanMisses = useSelector(selectHangmanMisses)
 
   const handkeKeyClick = (letter: string) =>
     hangmanKeyboardLetters[letter.charCodeAt(0)] &&

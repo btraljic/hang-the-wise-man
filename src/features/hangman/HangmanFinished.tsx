@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { postScore, selectHangmanGameStatus } from '.'
+import { getScores, postScore, selectHangmanGameStatus } from '.'
 import styles from './HangmanFinished.module.css'
 import winImg from '../../assets/img/win.png'
 import loseImg from '../../assets/img/lose.png'
@@ -12,11 +12,10 @@ function HangmanFinished() {
   const hangmanGameStatus = useSelector(selectHangmanGameStatus)
 
   useEffect(() => {
-    if (
-      hangmanGameStatus === GameStatus.Win ||
-      hangmanGameStatus === GameStatus.Lose
-    ) {
+    if (hangmanGameStatus === GameStatus.Win) {
       dispatch(postScore())
+    } else if (hangmanGameStatus === GameStatus.Lose) {
+      dispatch(getScores())
     }
   }, [hangmanGameStatus, dispatch])
 

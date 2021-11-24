@@ -1,9 +1,20 @@
 .container {
-  position: absolute;
-  background-color: transparent;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  padding: 3rem;
+  position: relative;
+  width: 450px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-size: 2rem;
+  background-color: #2b91f655;
+  border-radius: 5px;
+}
+
+.container > table {
+  color: #eeeeee;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 300px;
+    font-size: 1rem;
+  }
 }

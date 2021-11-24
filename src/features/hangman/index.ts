@@ -4,6 +4,7 @@ export {
   setKeyboardLetter,
   getPuzzle,
   postScore,
+  getScores,
   selectHangmanPuzzle,
   selectHangmanPuzzleShow,
   selectHangmanPuzzleAuthor,
@@ -12,4 +13,5 @@ export {
   selectHangmanKeyboardLetters,
   selectHangmanMisses,
   selectHangmanGameStatus,
+  selectHangmanScores,
 } from './hangmanSlice'

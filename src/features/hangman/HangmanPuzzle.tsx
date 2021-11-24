@@ -6,11 +6,11 @@ import {
   selectHangmanPuzzle,
   selectHangmanPuzzleShow,
   selectHangmanPuzzleAuthor,
+  selectHangmanFetchingStatus,
   selectHangmanActiveKeyboardLetter,
   selectHangmanGameStatus,
 } from '.'
 import styles from './HangmanPuzzle.module.css'
-import { selectHangmanFetchingStatus } from './hangmanSlice'
 import { GameStatus } from '../../app/types'
 
 function HangmanPuzzle() {
@@ -67,8 +67,8 @@ function HangmanPuzzle() {
   ])
 
   return (
-    <div>
-      <Spinner loading={hangmanFetchingStatus === 'loading'} />
+    <div className={styles.container}>
+      <Spinner loading={hangmanFetchingStatus.includes('loading')} />
       <div className={styles.text}>
         <em>
           {hangmanPuzzleAuthor}

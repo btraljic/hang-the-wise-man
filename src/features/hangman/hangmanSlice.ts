@@ -31,18 +31,25 @@ export const getPuzzle = createAsyncThunk(
 
 export const postScore = createAsyncThunk(
   'hangman/postScore',
-  async (_, { getState }) => {
-    console.log('getState', (getState() as RootState).hangman.score)
+  async (_, { getState, dispatch }) => {
     const response = await axios.post(
-      'https://my-json-server.typicode.com/stanko-ingemark/hang_the_wise_man_frontend_task/highscoress',
-      JSON.stringify('aaa'),
+      'https://my-json-server.typicode.com/stanko-ingemark/hang_the_wise_man_frontend_task/highscores',
+      JSON.stringify((getState() as RootState).hangman.score),
       {
         headers: { 'content-type': 'application/json' },
       }
     )
+    dispatch(getScores())
     return response.data
   }
 )
+
+export const getScores = createAsyncThunk('hangman/getScores', async () => {
+  const response = await axios.get(
+    'https://my-json-server.typicode.com/stanko-ingemark/hang_the_wise_man_frontend_task/highscores'
+  )
+  return response.data
+})
 
 const slice = createSlice({
   name: 'hangman',
@@ -63,6 +70,7 @@ const slice = createSlice({
       errors: 0,
       duration: 0,
     },
+    scores: [],
   } as Hangman,
 
   reducers: {
@@ -96,14 +104,15 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getPuzzle.pending, (state) => {
-        state.fetchingStatus = 'loading'
+        state.fetchingStatus = 'getPuzzle/loading'
+        state.scores = []
       })
       .addCase(getPuzzle.fulfilled, (state, { payload }) => {
         console.log('payload', payload)
         state.puzzle = payload.content.toUpperCase().split('')
         state.puzzleShow = getPuzzleShow(state.puzzle)
         state.puzzleAuthor = payload.author
-        state.fetchingStatus = 'success'
+        state.fetchingStatus = 'getPuzzle/success'
         state.activeKeyboardLetter = ''
         state.keyboardLetters = getKeyboardLetters()
         state.gameStatus = GameStatus.Playing
@@ -120,7 +129,7 @@ const slice = createSlice({
         state.puzzle = []
         state.puzzleShow = []
         state.puzzleAuthor = ''
-        state.fetchingStatus = 'failed'
+        state.fetchingStatus = 'getPuzzle/failed'
         state.activeKeyboardLetter = ''
         state.keyboardLetters = []
         state.score = {
@@ -133,13 +142,23 @@ const slice = createSlice({
         }
       })
       .addCase(postScore.pending, (state) => {
-        state.fetchingStatus = 'loading'
+        state.fetchingStatus = 'postScore/loading'
       })
-      .addCase(postScore.fulfilled, (state, { payload }) => {
-        state.fetchingStatus = 'success'
+      .addCase(postScore.fulfilled, (state) => {
+        state.fetchingStatus = 'postScore/success'
       })
       .addCase(postScore.rejected, (state) => {
-        state.fetchingStatus = 'failed'
+        state.fetchingStatus = 'postScore/failed'
+      })
+      .addCase(getScores.pending, (state) => {
+        state.fetchingStatus = 'getScores/loading'
+      })
+      .addCase(getScores.fulfilled, (state, { payload }) => {
+        state.scores = [...payload]
+        state.fetchingStatus = 'getScores/success'
+      })
+      .addCase(getScores.rejected, (state) => {
+        state.fetchingStatus = 'getScores/failed'
       })
   },
 })
@@ -161,5 +180,6 @@ export const selectHangmanMisses = (state: RootState) =>
   state.hangman.score.errors
 export const selectHangmanGameStatus = (state: RootState) =>
   state.hangman.gameStatus
+export const selectHangmanScores = (state: RootState) => state.hangman.scores
 
 export default slice.reducer

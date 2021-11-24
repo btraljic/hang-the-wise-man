@@ -1,3 +1,7 @@
+.container {
+  position: relative;
+}
+
 .text {
   font-size: 3rem;
 }
