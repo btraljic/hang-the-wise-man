@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Draggable from 'react-draggable'
 
@@ -12,18 +12,68 @@ import {
 } from '.'
 import { GameStatus } from '../../app/types'
 
+const keyboardRows = [
+  ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+  ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+  ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+]
+
+function useKeyboardLetters(
+  hangmanKeyboardLetters: boolean[],
+  hangmanGameStatus: GameStatus
+): JSX.Element[] {
+  const dispatch = useDispatch()
+  const [keyboardLetters, setKeyboardLetters] = useState([] as JSX.Element[])
+
+  const handkeKeyClick = useCallback(
+    (letter: string) =>
+      hangmanKeyboardLetters[letter.charCodeAt(0)] &&
+      hangmanGameStatus === GameStatus.Playing
+        ? dispatch(setKeyboardLetter(letter))
+        : null,
+    [dispatch, hangmanGameStatus, hangmanKeyboardLetters]
+  )
+
+  useEffect(() => {
+    const arr: JSX.Element[] = []
+    keyboardRows.forEach((row, rowIndex) => {
+      arr.push(
+        <div key={rowIndex} className={styles.keyboardRow}>
+          {row.map((letter, letterIndex) => (
+            <span
+              key={`${rowIndex}-${letterIndex}`}
+              className={
+                hangmanKeyboardLetters[letter.charCodeAt(0)]
+                  ? styles.key
+                  : styles.keyDisabled
+              }
+              onClick={() => handkeKeyClick(letter)}
+            >
+              {letter}
+            </span>
+          ))}
+        </div>
+      )
+      setKeyboardLetters(arr)
+    })
+  }, [handkeKeyClick, hangmanKeyboardLetters])
+
+  return keyboardLetters
+}
+
 function HangmanKeyboard() {
+  const [isMinimize, setIsMinimize] = useState(false)
   const nodeRef = useRef(null)
   const dispatch = useDispatch()
   const userName = useSelector(selectUser)
   const hangmanKeyboardLetters = useSelector(selectHangmanKeyboardLetters)
   const hangmanGameStatus = useSelector(selectHangmanGameStatus)
+  const keyboardLetters = useKeyboardLetters(
+    hangmanKeyboardLetters,
+    hangmanGameStatus
+  )
 
-  const handkeKeyClick = (letter: string) =>
-    hangmanKeyboardLetters[letter.charCodeAt(0)] &&
-    hangmanGameStatus === GameStatus.Playing
-      ? dispatch(setKeyboardLetter(letter))
-      : null
+  const handleMinimize = () => setIsMinimize((prev) => !prev)
 
   return (
     <Draggable
@@ -39,280 +89,22 @@ function HangmanKeyboard() {
         ref={nodeRef}
       >
         <div className={`moveMe ${styles.moveBar}`}>MOVE ME</div>
-        <div className={styles.keyboardRow}>
-          <span
-            className={
-              hangmanKeyboardLetters['Q'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('Q')}
-          >
-            Q
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['W'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('W')}
-          >
-            W
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['E'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('E')}
-          >
-            E
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['R'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('R')}
-          >
-            R
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['T'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('T')}
-          >
-            T
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['Y'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('Y')}
-          >
-            Y
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['U'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('U')}
-          >
-            U
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['I'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('I')}
-          >
-            I
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['O'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('O')}
-          >
-            O
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['P'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('P')}
-          >
-            P
-          </span>
-        </div>
-        <div className={styles.keyboardRow}>
-          <span
-            className={
-              hangmanKeyboardLetters['A'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('A')}
-          >
-            A
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['S'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('S')}
-          >
-            S
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['D'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('D')}
-          >
-            D
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['F'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('F')}
-          >
-            F
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['G'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('G')}
-          >
-            G
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['H'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('H')}
-          >
-            H
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['J'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('J')}
-          >
-            J
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['K'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('K')}
-          >
-            K
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['L'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('L')}
-          >
-            L
-          </span>
-        </div>
-        <div className={styles.keyboardRow}>
-          <span
-            className={
-              hangmanKeyboardLetters['Z'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('Z')}
-          >
-            Z
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['X'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('X')}
-          >
-            X
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['C'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('C')}
-          >
-            C
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['V'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('V')}
-          >
-            V
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['B'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('B')}
-          >
-            B
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['N'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('N')}
-          >
-            N
-          </span>
-          <span
-            className={
-              hangmanKeyboardLetters['M'.charCodeAt(0)]
-                ? styles.key
-                : styles.keyDisabled
-            }
-            onClick={() => handkeKeyClick('M')}
-          >
-            M
-          </span>
-        </div>
-        <div className={styles.keyboardRow}>
-          <span
-            className={`${styles.key} ${styles.reset}`}
-            onClick={() => dispatch(getPuzzle({ userName }))}
-          >
-            START A NEW GAME
-          </span>
-        </div>
+        <span className={styles.minimize} onClick={handleMinimize}>
+          {isMinimize ? '▼' : '▲'}
+        </span>
+        {!isMinimize && (
+          <>
+            {keyboardLetters}
+            <div className={styles.keyboardRow}>
+              <span
+                className={`${styles.key} ${styles.reset}`}
+                onClick={() => dispatch(getPuzzle({ userName }))}
+              >
+                START A NEW GAME
+              </span>
+            </div>
+          </>
+        )}
       </div>
     </Draggable>
   )

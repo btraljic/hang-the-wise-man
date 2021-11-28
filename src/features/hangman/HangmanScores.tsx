@@ -31,7 +31,14 @@ function HangmanScores() {
       <table className='table table-borderless'>
         <thead>
           <tr>
-            <th colSpan={2}>SCORES</th>
+            <th colSpan={2}>
+              <div className={styles.head}>
+                {hangmanGameStatus === GameStatus.Lose
+                  ? 'YOU LOSE!'
+                  : 'YOU WIN!'}
+              </div>
+              SCORES
+            </th>
           </tr>
         </thead>
         <tbody>{showScores()}</tbody>

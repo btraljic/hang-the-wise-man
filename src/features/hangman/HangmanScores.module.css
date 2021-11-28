@@ -19,9 +19,18 @@
   color: #eeeeee;
 }
 
+.head {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .container {
     width: 300px;
     font-size: 1.5rem;
+  }
+
+  .head {
+    font-size: 2rem;
   }
 }
